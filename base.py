@@ -1,3 +1,5 @@
+import models
+
 
 class Plugin:
 
@@ -17,14 +19,14 @@ class Assistant:
         """
         self.modeL.learn(plugin)
     
-    def prompt(self, prompt: str) -> None:
+    def prompt(self, text: str) -> None:
         system = \
 """Tu es un assistant virtuel."""
-        return self.model.prompt(system + prompt)
+        return self.model.prompt(system, text, 1000)
 
 
 if __name__ == "__main__":
-    model = Model.fromOpenAI("chat-gpt-4")
+    model = models.ModelOpenAI("APIKEY", "chat-gpt-4")
     ada = Assistant("Ada", model)
 
     plugin_time = Plugin("plugins/time")

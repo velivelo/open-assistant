@@ -9,13 +9,13 @@ class ModelOpenAI(base.Model):
         openai.api_key = api_key
         self.id = model_id
 
-    def prompt(self, text, max_tokens, n= 1, temperature= 1.0):
+    def prompt(self, system, text, max_tokens):
         response = openai.Completion.create(
             engine= self.id,
             prompt= text,
             max_tokens= max_tokens,
-            n= n,
-            temperature= temperature,
+            n= 1,
+            temperature= 1.0,
             stop= None,
         )
         return [choice.text.strip() for choice in response.choices]
@@ -25,4 +25,4 @@ class ModelOpenAI(base.Model):
 if __name__ == "__main__":
     model = ModelOpenAI("", "text-davinci-002")
     prompt_text = "Once upon a time"
-    completions = model.prompt(prompt_text, 100, n= 3)
+    completions = model.prompt("", prompt_text, 100, n= 3)
