@@ -1,4 +1,6 @@
-from plugin import Plugin
+from .plugin import Plugin
+
+import pkg_resources
 
 
 class Assistant:
@@ -8,8 +10,7 @@ class Assistant:
         self.model = model
         self.plugins = []
 
-        with open("system.txt", "r") as f:
-            self.system = f.read()
+        self.system = pkg_resources.resource_string('open_assistant', "system.txt").decode("utf-8")
     
     def addPlugin(self, plugin: Plugin) -> None:
         """Fine-tune the model so it learns the plugin.

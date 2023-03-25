@@ -1,12 +1,15 @@
-# import models
-# from plugin import Plugin
-# from assistant import Assistant
+from open_assistant import Assistant, Plugin
+from open_assistant.models import ModelOpenAI
+
+import os
 
 
+if __name__ == "__main__":
+    PATH = os.path.dirname(os.path.abspath(__file__))
+    PLUGINS_PATH = os.path.join(PATH, "plugins")
 
-# if __name__ == "__main__":
-#     model = models.ModelOpenAI("APIKEY", "chat-gpt-4")
-#     ada = Assistant("Ada", model)
+    model = ModelOpenAI("APIKEY", "chat-gpt-4")
+    ada = Assistant("Ada", model)
 
-#     plugin_time = Plugin("plugins/time")
-#     ada.addPlugin(plugin_time)
+    plugin_time = Plugin(os.path.join(PLUGINS_PATH, "time"))
+    ada.addPlugin(plugin_time)

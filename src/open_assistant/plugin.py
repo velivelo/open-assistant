@@ -7,7 +7,7 @@ class Plugin:
     def __init__(self, path: str) -> None:
         self.path = path
         self.path_data = os.path.join(path, "data")
-    
+
         with open(os.path.join(self.path, "manifest.json"), "r") as f:
             self.manifest = json.load(f)
     

@@ -1,9 +1,9 @@
-import base
+from .base import Model
 
 import openai
 
 
-class ModelOpenAI(base.Model):
+class ModelOpenAI(Model):
 
     def __init__(self, api_key, model_id):
         openai.api_key = api_key
