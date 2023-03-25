@@ -1,2 +1,3 @@
-src/build
-src/open_assistant.egg-info
+src/build/
+src/open_assistant.egg-info/
+tests/__pycache__/
