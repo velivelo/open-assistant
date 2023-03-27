@@ -15,22 +15,30 @@ class ModelOpenAI(Model):
         super.__init__(id)
         openai.api_key = api_key
 
-    def prompt(self, text: str, max_tokens: int):
+    def prompt(self, text: str, max_tokens: int) -> dict:
         response = openai.Completion.create(
             engine= self.id,
-            prompt= text,
+            prompt= self.system + text,
             max_tokens= max_tokens,
-            n= 1,
-            temperature= 1.0,
-            stop= None,
         )
         return { 
             "text": response.choices[0].text,
-            "tokens": response.choices[0].tokens
+            "usage": response.usage # prompt_tokens, completion_tokens, total_tokens
         }
 
     def learn(self, plugin: Plugin):
         data = [line for line in plugin.getData()]
         response = openai.Dataset.create(data= data)
         dataset_id = response["id"]
-        print("A fine-tuning job has been created. dataset_id: " + dataset_id)
+
+        response = openai.FineTuning.create(
+            model= "text-davinci-003",
+            dataset_id= dataset_id,
+            n_epochs= 1,
+            learning_rate= "1e-5",
+            batch_size= 4,
+            num_warmup_steps= 10,
+        )
+        fine_tuning_id = response["id"]
+
+        print(f"A fine-tuning job has been created. dataset_id= {dataset_id}, fine_tuning_id= {fine_tuning_id}")

@@ -1,10 +1,11 @@
 import os
 import json
+from typing import Generator
 
 
 class Plugin:
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str):
         """
         :param path: Path to the plugin folder
         """
@@ -12,9 +13,17 @@ class Plugin:
         self.path_data = os.path.join(path, "data")
 
         with open(os.path.join(self.path, "manifest.json"), "r") as f:
-            self.manifest = json.load(f)
+            manifest = json.load(f)
+
+        self.name = manifest["name"]
+        self.version = manifest["version"]
+        self.description = manifest["description"]
+        self.author = manifest["author"]
     
-    def getInfos(self):
+    def getSize(self) -> dict:
+        """
+        :return: Dictionary with "lines" and "tokens" keys
+        """
         lines = 0
         tokens = 0
         for line in self.readData():
@@ -23,10 +32,13 @@ class Plugin:
             tokens += len(line["output"].split(" "))
         return {
             "lines": lines,
-            "tokens": tokens
+            "tokens": tokens,
         }
 
-    def readData(self):
+    def readData(self) -> Generator:
+        """
+        :return: Generator of dictionaries with "input" and "output" keys
+        """
         files = os.listdir(self.path_data) # all .jsonl
         for file in files:
             with open(os.path.join(self.path_data, file), "r") as f:

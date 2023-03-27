@@ -1,6 +1,6 @@
 {
     "name": "time",
     "version": "1.0.0",
-    "description_human": "Get the time.",
-    "description_model": "Get the time."
+    "description": "Get the time.",
+    "author": "Clément Mébarki"
 }

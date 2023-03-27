@@ -3,7 +3,7 @@ from __future__ import annotations
 
 class Model:
 
-    def __init__(self, id: str) -> None:
+    def __init__(self, id: str):
         """
         :param id: Model ID
         """
@@ -14,7 +14,7 @@ class Model:
         """
         :param text: Text to prompt the model
         :param max_tokens: Maximum number of tokens to generate
-        :return: Dictionary with "text" and "tokens" keys
+        :return: Dictionary with "text" and "usage" keys
         """
         raise NotImplementedError()
     
