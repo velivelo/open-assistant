@@ -10,7 +10,8 @@ class ModelOpenAI(Model):
     def __init__(self, id: str, api_key: str):
         """
         :param id: OpenAI model ID
-        :param api_key: OpenAI API key"""
+        :param api_key: OpenAI API key
+        """
         super.__init__(id)
         openai.api_key = api_key
 

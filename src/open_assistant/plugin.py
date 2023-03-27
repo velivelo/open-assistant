@@ -5,6 +5,9 @@ import json
 class Plugin:
 
     def __init__(self, path: str) -> None:
+        """
+        :param path: Path to the plugin folder
+        """
         self.path = path
         self.path_data = os.path.join(path, "data")
 

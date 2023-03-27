@@ -5,7 +5,8 @@ class Model:
 
     def __init__(self, id: str) -> None:
         """
-        :param id: Model ID"""
+        :param id: Model ID
+        """
         self.id = id
         self.system = ""
         
@@ -13,10 +14,12 @@ class Model:
         """
         :param text: Text to prompt the model
         :param max_tokens: Maximum number of tokens to generate
-        :return: Dictionary with "text" and "tokens" keys"""
+        :return: Dictionary with "text" and "tokens" keys
+        """
         raise NotImplementedError()
     
     def learn(self, plugin: Plugin):
         """
-        :param plugin: Plugin object"""
+        :param plugin: Plugin object
+        """
         raise NotImplementedError()
