@@ -1,17 +1,20 @@
+from __future__ import annotations
+
 from .base import Model
 
-import requests
+import openai
 
 
 class ModelOpenAI(Model):
 
-    def __init__(self, api_key, id):
+    def __init__(self, id: str, api_key: str):
         """
-        :param api_key: OpenAI API key
-        :param id: OpenAI model ID"""
-        self.headers = { "Content-Type": "application/json", "Authorization": f"Bearer {api_key}" }
+        :param id: OpenAI model ID
+        :param api_key: OpenAI API key"""
+        super.__init__(id)
+        openai.api_key = api_key
 
-    def prompt(self, system, text, max_tokens):
+    def prompt(self, text: str, max_tokens: int):
         response = openai.Completion.create(
             engine= self.id,
             prompt= text,
@@ -20,20 +23,13 @@ class ModelOpenAI(Model):
             temperature= 1.0,
             stop= None,
         )
-        return [choice.text.strip() for choice in response.choices]
+        return { 
+            "text": response.choices[0].text,
+            "tokens": response.choices[0].tokens
+        }
 
-    def learn(self, plugin):
-        """"""
+    def learn(self, plugin: Plugin):
         data = [line for line in plugin.getData()]
-        response = requests.post("https://api.openai.com/v1/datasets", headers= self.headers, data= data)
-
-        self.dataset_id = response.json()["id"]
-
-
-
-
-# Test
-if __name__ == "__main__":
-    model = ModelOpenAI("", "text-davinci-002")
-    prompt_text = "Once upon a time"
-    completions = model.prompt("", prompt_text, 100, n= 3)
+        response = openai.Dataset.create(data= data)
+        dataset_id = response["id"]
+        print("A fine-tuning job has been created. dataset_id: " + dataset_id)

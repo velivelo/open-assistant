@@ -28,4 +28,4 @@ class Plugin:
         for file in files:
             with open(os.path.join(self.path_data, file), "r") as f:
                 for line in f:
-                    yield json.load(line)
+                    yield json.loads(line)
