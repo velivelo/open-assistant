@@ -12,7 +12,7 @@ You :
     "completion": "I'm fine, thank you."
 }
 
-Un autre qui nécessite une action : 
+Un autre exemple qui nécessite une action : 
 User :
 {
     "prompt": "What time is it ?"
@@ -44,8 +44,3 @@ You :
 }
 
 Maintenant à toi de jouer !
-User : 
-{
-    "prompt": "J'ai bien mangé aujourd'hui."
-}
-You :

@@ -24,8 +24,11 @@ format d'action
 {
     "endpoint": "http://localhost:5000",
     "method": "POST",
-    "body": {
+    "json": {
         "name": "nom",
         "age": 20
     }
 }
+
+
+TODO quand le modèle propose des actions clés, celles-ci doivent pouvoir être validées ou non par l'utilisateur

@@ -4,6 +4,10 @@ from typing import Generator
 
 
 class Plugin:
+    """A plugin is a knowledge base for an assistant.
+    It contains a set of data in the form of input/output pairs.
+    It is used to teach an assistant about general knowledge, api documentations, system commands, etc.
+    """
 
     def __init__(self, path: str):
         """

@@ -5,11 +5,10 @@ import os
 
 
 if __name__ == "__main__":
-    PATH = os.path.dirname(os.path.abspath(__file__))
-    PLUGINS_PATH = os.path.join(PATH, "plugins")
+    PLUGINS_PATH = os.path.join(os.path.abspath(__file__), "plugins")
 
     model = ModelOpenAI("APIKEY", "chat-gpt-4")
-    ada = Assistant("Ada", model)
+    ass = Assistant("Ass", model)
 
     plugin_time = Plugin(os.path.join(PLUGINS_PATH, "time"))
-    ada.addPlugin(plugin_time)
+    ass.addPlugin(plugin_time)
