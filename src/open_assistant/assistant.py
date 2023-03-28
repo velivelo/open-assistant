@@ -36,11 +36,12 @@ class Assistant:
         # TODO: enlever du system la fin
         # TODO: gérer la mémoire, cad qu'il faut retenir les échanges précédents (pas garder les étapes actions, juste les textes)
 
-        prompt_obj_str = "User :\n" + json.stringify({
-            "prompt": text,
-        }) + "\nYou :\n"
         for i in range(max_steps): 
-            response = self.model.prompt(prompt_obj_str, max_tokens)
+            prompt_formated = "User :\n" + json.stringify({
+                "prompt": text,
+            }) + "\nYou :\n"
+
+            response = self.model.prompt(prompt_formated, max_tokens)
             completion_obj = json.loads(response["text"]) # if error it means the model doesn't understand how to respond
             
             if "completion" in completion_obj:
@@ -58,6 +59,7 @@ class Assistant:
                 "locals": locals_,
                 "prompt": text,
             })
+
         return {
             "text": f"The assistant failed to figure a response in {max_steps} steps.",
             "usage": 0,
