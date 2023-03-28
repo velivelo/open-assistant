@@ -6,7 +6,7 @@ from enum import Enum
 
 class Author(Enum):
     USER = 0
-    MODEL = 1
+    ASSISTANT = 1
 
 
 class Message:

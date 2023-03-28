@@ -60,7 +60,9 @@ class Assistant:
         :param debug: If True, the model will print the debug texts
         :return: Dictionary with "text" and "usage" keys
         """
+        # TODO: implémenter le mode debug true or false qui change le system
         # TODO: ajouter le chat history de la conversation dans le système
+
         prompt_formated = {
             "prompt": text,
         }

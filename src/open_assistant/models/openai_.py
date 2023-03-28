@@ -12,7 +12,7 @@ class ModelOpenAI(Model):
         :param id: OpenAI model ID
         :param api_key: OpenAI API key
         """
-        super.__init__(id)
+        super().__init__(id)
         openai.api_key = api_key
 
     def prompt(self, text: str, max_tokens: int) -> dict:
@@ -27,7 +27,7 @@ class ModelOpenAI(Model):
         }
 
     def learn(self, plugin: Plugin):
-        data = [line for line in plugin.getData()]
+        data = [line for line in plugin.readData()]
         response = openai.Dataset.create(data= data)
         dataset_id = response["id"]
 

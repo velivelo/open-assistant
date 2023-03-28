@@ -8,5 +8,5 @@ setup(
     author= "Clément Mébarki",
     author_email= "m_clement@live.fr",
     packages= ["open_assistant", "open_assistant.models"],
-    package_data= { "open_assistant": ["system.txt"] },
+    package_data= { "open_assistant": ["system.txt", "system_debug.txt"] },
 )
