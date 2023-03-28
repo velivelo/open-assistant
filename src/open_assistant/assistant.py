@@ -1,5 +1,6 @@
 from .models import Model
 from .plugin import Plugin
+from .action import handleAction
 
 import pkg_resources
 import json
@@ -16,6 +17,7 @@ class Assistant:
         self.model = model
         self.model.system = pkg_resources.resource_string("open_assistant", "system_debug.txt").decode("utf-8")
         self.plugins = []
+        self.auth = {}
     
     def addPlugin(self, plugin: Plugin):
         """Fine-tune the model so it learns the plugin.
@@ -27,42 +29,38 @@ class Assistant:
     def prompt(self, text: str, max_tokens= 4096, max_steps= 2, debug= False) -> dict:
         """
         :param text: Text to prompt the model
-        :param max_tokens: Maximum number of total tokens (prompt + completion)
+        :param max_tokens: Maximum number of total tokens (prompt + completion) per step
         :param max_steps: Maximum number of steps to try to get a response
         :param debug: If True, the model will print the debug texts
         :return: Dictionary with "text" and "usage" keys
         """
-        # TODO: voir pr ajouter User : et You : dans le prompt
+        # TODO: ajouter l'historique de la conversation dans le système
         # TODO: enlever du system la fin
-        # TODO: gérer la mémoire, cad qu'il faut retenir les échanges précédents (pas garder les étapes actions, juste les textes)
+        prompt_formated = {
+            "prompt": text,
+        }
+        usage = 0
 
         for i in range(max_steps): 
-            prompt_formated = "User :\n" + json.stringify({
-                "prompt": text,
-            }) + "\nYou :\n"
-
-            response = self.model.prompt(prompt_formated, max_tokens)
-            completion_obj = json.loads(response["text"]) # if error it means the model doesn't understand how to respond
+            response = self.model.prompt(f"User :\n{json.stringify(prompt_formated)}\nYou :\n", max_tokens)
+            usage += response["usage"]["total_tokens"]
+            completion_formated = json.loads(response["text"]) # if error here -> too bad model
             
-            if "completion" in completion_obj:
+            if "completion" in completion_formated:
                 return {
-                    "text": completion_obj["completion"],
-                    "usage": 0, # sum of all usage
+                    "text": completion_formated["completion"],
+                    "usage": usage,
                 }
             
             locals_ = {}
-            if "actions" in completion_obj: # there should be actions if no completion
-                for action in completion_obj["actions"]:
-                    locals_[action["id"]] = None # TODO: implement actions
+            for action in completion_formated["actions"]: # if error here -> too bad model
+                locals_[action["id"]] = handleAction(action)
             
-            prompt_obj_str = json.stringify({
-                "locals": locals_,
-                "prompt": text,
-            })
+            prompt_formated.setdefault("locals", {}).update(locals_)
 
         return {
             "text": f"The assistant failed to figure a response in {max_steps} steps.",
-            "usage": 0,
+            "usage": usage,
         }
             
 
