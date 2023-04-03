@@ -1,6 +1,6 @@
 from .models import Model
 from .plugin import Plugin
-from .chat import Chat
+from .chat import Chat, Author, Message
 
 import pkg_resources
 import json
@@ -61,7 +61,7 @@ class Assistant:
         :return: Dictionary with "text" and "usage" keys
         """
         # TODO: implémenter le mode debug true or false qui change le system
-        # TODO: ajouter le chat history de la conversation dans le système
+        chat_history = chat.getHistory(user_prefix= "User :\n{\n\"prompt\": \"", user_suffix= "\"\n}\n", assistant_prefix= "You :\n{\n\"completion\": \"", assistant_suffix= "\"\n}\n")
 
         prompt_formated = {
             "prompt": text,
@@ -69,7 +69,7 @@ class Assistant:
         usage = 0
 
         for i in range(max_steps): 
-            response = self.model.prompt(f"User :\n{json.stringify(prompt_formated)}\nYou :\n", max_tokens)
+            response = self.model.prompt(f"{chat_history}User :\n{json.stringify(prompt_formated)}\nYou :\n", max_tokens)
             usage += response["usage"]["total_tokens"]
             completion_formated = json.loads(response["text"]) # if error here -> too bad model
             
